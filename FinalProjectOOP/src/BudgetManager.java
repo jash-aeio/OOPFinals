@@ -1,32 +1,26 @@
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class BudgetManager {
     private double totalBudget;
-    private final List<BudgetItem> budgetItems;
+    private List<BudgetItem> budgetItems;
 
     public BudgetManager() {
         this.budgetItems = new ArrayList<>();
     }
 
+
     public void setBudget() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter your monthly budget: ");
-        double budgetAmount = scanner.nextDouble();
-        this.totalBudget = budgetAmount;
-        System.out.println("Your budget has been set to: PHP" + totalBudget);
-    }
-
-
-    public double getBudget() {
-        return this.totalBudget;
+        Budget budget = new Budget();
+        this.totalBudget = budget.setAmount();
     }
 
 
     public void manageExpensesMenu() {
         Scanner scanner = new Scanner(System.in);
-        ExpenseManager expenseManager = new ExpenseManager(budgetItems); 
+        ExpenseManager expenseManager = new ExpenseManager(budgetItems); // Pass the budgetItems list
 
         int manageChoice = 0;
         do {
@@ -37,66 +31,55 @@ public class BudgetManager {
             System.out.println("[4] Go Back to Main Menu");
             System.out.print("Enter Option: ");
 
-            manageChoice = scanner.nextInt();
+            try {
+                manageChoice = scanner.nextInt();
 
-            switch (manageChoice) {
-                case 1:
-                    expenseManager.addExpense();
-                    break;
+                switch (manageChoice) {
+                    case 1:
+                        expenseManager.addExpense();
+                        break;
 
-                case 2:
-                    expenseManager.viewExpenses();
-                    break;
+                    case 2:
+                        expenseManager.viewExpenses();
+                        break;
 
-                case 3:
-                    expenseManager.deleteExpense();
-                    break;
+                    case 3:
+                        expenseManager.deleteExpense();
+                        break;
 
-                case 4:
-                    return;
+                    case 4:
+                        System.out.println("Returning to Main Menu...");
+                        break;
 
-
-                default:
-                    System.out.println("Invalid option. Please try again.");
+                    default:
+                        System.out.println("Invalid option. Please try again.");
+                        break;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a number.");
+                scanner.nextLine();
             }
-        } while (manageChoice != 4);  // Repeat until user chooses to go back to the main menu
+        } while (manageChoice != 4);
     }
 
 
     public void viewBudget() {
         if (totalBudget > 0) {
-            System.out.println("\nYour current budget is: $" + totalBudget);
-
+            System.out.println("Your current budget is: PHP " + totalBudget);
+            BudgetView budgetView = new BudgetView(totalBudget, budgetItems);
+            budgetView.display();
         } else {
-            System.out.println("You need to set a budget first before viewing it.\n");
+            System.out.println("Please set a budget first before viewing.");
         }
     }
-
 
     public void generateSummary() {
         if (totalBudget > 0) {
-            System.out.println("\nGenerating Budget Summary...\n");
+            System.out.println("Generating Budget Summary...");
             SummaryReport summaryReport = new SummaryReport(totalBudget, budgetItems);
-            summaryReport.generate("Monthly");
+            summaryReport.generate();
         } else {
-            System.out.println("Please set a budget before generating a summary.\n");
-        }
-    }
-
-    // Check for overspending
-    public void checkOverspending() {
-        double totalSpent = 0;
-        for (BudgetItem item : budgetItems) {
-            totalSpent += ((Expense)item).getAmount();
-        }
-
-        if (totalSpent > totalBudget) {
-            System.out.println("Warning: You have exceeded your budget by $" + (totalSpent - totalBudget));
-        } else if (totalSpent > totalBudget * 0.9) {
-            System.out.println("Warning: You are nearing your budget limit! You've spent $" + totalSpent);
-        } else {
-            System.out.println("You are within your budget. Total spent: $" + totalSpent);
+            System.out.println("Please set a budget before generating a summary.");
         }
     }
 }
-

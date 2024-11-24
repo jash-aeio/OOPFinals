@@ -9,15 +9,29 @@ public class SummaryReport {
         this.budgetItems = budgetItems;
     }
 
-    public void generate(String timeframe) {
-        double totalSpent = 0;
+    public void generate() {
+
+        double totalExpenses = 0;
         for (BudgetItem item : budgetItems) {
-            totalSpent += ((Expense)item).getAmount();
+            totalExpenses += item.calculateCost();
         }
 
-        System.out.println("Summary Report (" + timeframe + ")");
-        System.out.println("Total Budget: " + totalBudget);
-        System.out.println("Total Spent: " + totalSpent);
-        System.out.println("Remaining: " + (totalBudget - totalSpent));
+        System.out.println("------ Budget Summary ------");
+        System.out.printf("Total Budget: PHP %.2f \n", totalBudget);
+        System.out.printf("Total Expenses: PHP %.2f \n", totalExpenses);
+        System.out.printf("Remaining Budget: PHP %.2f\n ", totalBudget - totalExpenses);
+
+        // Expense breakdown by category
+        System.out.println("");
+        System.out.println("Expense Breakdown by Category:");
+        if (budgetItems.isEmpty()) {
+            System.out.println("No expenses recorded.");
+        } else {
+            for (BudgetItem item : budgetItems) {
+                System.out.printf("\n- %s: PHP %.2f", item.getName(), item.calculateCost());
+            }
+        }
+        System.out.println("");
+        System.out.println("----------------------------");
     }
 }

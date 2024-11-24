@@ -18,7 +18,7 @@ public class Budget {
                     System.out.println("Budget cannot be set to less than or equal to zero. Please try again.");
                 } else {
                     validInput = true;
-                    System.out.println("Your budget has been set to: $" + amount);
+                    System.out.println("Your budget has been set to: PHP" + amount);
                 }
 
             } catch (InputMismatchException e) {

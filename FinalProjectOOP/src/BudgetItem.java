@@ -13,8 +13,11 @@ public abstract class BudgetItem {
         this.name = name;
     }
 
-    public double calculateCost() {
-        return 0.0; // Default implementation
+
+    public String getCategory() {
+        return null;
     }
+
+    public abstract double calculateCost();
 }
 

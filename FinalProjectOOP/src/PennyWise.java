@@ -7,7 +7,7 @@ public class PennyWise {
     public static void menu() {
         System.out.println("+---------------------------------+");
         System.out.println("|            PennyWise            |");
-        System.out.println("|      A Budget Tracker App       |");
+        System.out.println("|  Your Personal Expense Tracker  |");
         System.out.println("+---------------------------------+");
         System.out.println("| [1] Set Budget                  |");
         System.out.println("| [2] Manage Expenses             |");
@@ -63,13 +63,15 @@ public class PennyWise {
 
                     case 5:
                         exit();
-                        break;
+                        scanner.close();
+                        return;
 
                     default:
-                        System.out.println("Incorrect option. Please try again.");
+                        System.out.println("Incorrect option. Please try again.\n");
                         break;
                 }
-            } catch (InputMismatchException e) {
+
+                } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Please enter a valid option.");
                 scanner.nextLine();
             }

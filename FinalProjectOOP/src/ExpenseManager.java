@@ -10,13 +10,16 @@ public class ExpenseManager {
 
     public void addExpense() {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter expense name: ");
-        String name = scanner.nextLine();
+        System.out.print("Enter expense category: ");
+        String category = scanner.nextLine();
         System.out.print("Enter expense amount: ");
         double amount = scanner.nextDouble();
-        Expense expense = new Expense(name, amount);
+        scanner.nextLine();
+
+
+        Expense expense = new Expense(category, amount);
         budgetItems.add(expense);
-        System.out.println("Expense added: " + name + " - $" + amount);
+        System.out.println("Expense added: " + category + " - PHP " + amount);
     }
 
     public void viewExpenses() {
@@ -25,23 +28,28 @@ public class ExpenseManager {
         } else {
             System.out.println("----- Expenses -----");
             for (BudgetItem item : budgetItems) {
-                System.out.println(item.getName() + ": $" + item.calculateCost());
+                Expense expense = (Expense) item;  // Cast to Expense
+                System.out.println("Category: " + expense.getCategory() + ", Amount: PHP " + expense.getAmount()
+                );
             }
         }
     }
 
     public void deleteExpense() {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter the name of the expense to delete: ");
-        String name = scanner.nextLine();
+        System.out.print("Enter the category of the expense to delete: ");
+        String category = scanner.nextLine();
         boolean found = false;
 
         for (int i = 0; i < budgetItems.size(); i++) {
-            if (budgetItems.get(i).getName().equalsIgnoreCase(name)) {
-                budgetItems.remove(i);
-                System.out.println("Expense deleted: " + name);
-                found = true;
-                break;
+            if (budgetItems.get(i) instanceof Expense) {
+                Expense expense = (Expense) budgetItems.get(i);
+                if (expense.getCategory().equalsIgnoreCase(category)) {
+                    budgetItems.remove(i);
+                    System.out.println("Expense deleted: " + category);
+                    found = true;
+                    break;
+                }
             }
         }
 

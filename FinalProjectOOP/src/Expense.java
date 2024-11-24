@@ -1,8 +1,10 @@
-public final class Expense extends BudgetItem {
+public class Expense extends BudgetItem {
     private double amount;
+    private String category;
 
-    public Expense(String name, double amount) {
-        super(name);
+    public Expense(String category, double amount) {
+        super(category);
+        this.category = category;
         this.amount = amount;
     }
 
@@ -17,5 +19,14 @@ public final class Expense extends BudgetItem {
 
     public void setAmount(double amount) {
         this.amount = amount;
+    }
+
+    @Override
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }
